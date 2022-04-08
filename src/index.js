@@ -3,10 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { UserProvider } from './context/user';
+import { MessageProvider } from './context/message';
+import { WorkoutProvider } from './context/workout'
 
 ReactDOM.render(
   <React.StrictMode>
+    
+    <UserProvider>
+    <MessageProvider>
+    <WorkoutProvider>
     <App />
+    </WorkoutProvider>
+    </MessageProvider>
+    </UserProvider>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );

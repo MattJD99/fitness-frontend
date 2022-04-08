@@ -1,27 +1,49 @@
-import {useState, useEffect} from "react"
-import {Link, useParams} from "react-router-dom"
+import { useContext, useState } from "react"
+import { Link } from "react-router-dom"
+import { UserContext } from "../context/user";
 import YoutubeEmbed from "./YoutubeEmbed";
 
-function ExerciseCard({exercise}) {
-    const {id} = useParams()
-    const [exerciseObj, setexerciseObj] = useState(null);
-    useEffect(() => {   
-        if (!exercise) {
-            fetch(`http://localhost:9393/exercises/${id}`)
-            .then(resp => resp.json())
-            .then(exercise => setexerciseObj(exercise))
-        }
-    }, [exercise, id]);
+function ExerciseCard({ exercise, workout, setWorkout }) {
+    const {user} = useContext(UserContext)
+    const [workoutObj, setWorkoutObj] = useState({
+      exercise_id: null,
+      exercise_name: null
+    })
 
-    const finalexercise = exercise ? exercise : exerciseObj
-    if (!finalexercise) return <h1>Loading...</h1>
+    function handleClick(event) {
+      event.preventDefault()
+      setWorkoutObj({
+        exercise_id: event.target.id,
+        exercise_name: exercise.exercise_name
+      });
+      console.log(workoutObj)
+      console.log(workoutObj.exercise_name)
+
+      if (workoutObj.exercise_name !== null)
+      fetch(`http://127.0.0.1:9393/workouts/${user.id}`, {
+        method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(workoutObj),
+            })
+            .then((response) => response.json())
+            // .then(((data) => {
+            //     setWorkout(data)
+            //   }))
+          
+    }
+            
+
+    if (!exercise) return <h1>Loading...</h1>
   return (
     <div>
-        <h3>Name: <Link to={`/exercises/${finalexercise.id}`}>{finalexercise.exercise_name}</Link></h3>
-        <h4>description: {finalexercise.description}</h4>
-        <h4>Video: <YoutubeEmbed embedId={finalexercise.video_link}></YoutubeEmbed> </h4>
-        {/* <h4>Watering Frequency: {finalexercise.watering_freq} (days/week)</h4>
-        <h4>Uploaded by: {finalexercise.user?.username || "No creator!"}</h4> */}
+        <h3>Name: <Link to={`/exercises/${exercise.id}`}>{exercise.exercise_name}</Link></h3>
+        <h4>description: {exercise.description}</h4>
+        {user ? <form onClick={handleClick}>
+                  <button key={exercise.exercise_name} id={exercise.id}>Add to your Workout</button>
+                </form> : null}
+        <h4>Video: <YoutubeEmbed embedId={exercise.video_link}/> </h4>
     </div>
   )
 }

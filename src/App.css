@@ -39,7 +39,7 @@
 
 .video-responsive {
   overflow: hidden;
-  padding-bottom: 56.25%;
+  padding: 500px;
   position: relative;
   height: 0;
 }

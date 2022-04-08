@@ -1,34 +1,53 @@
-import {useState, useEffect} from "react"
+import { useState, useEffect, useContext } from "react"
 import ExercisesList from "../components/ExercisesList"
+import { UserContext } from "../context/user"
 
-const ExercisesContainer = () => {
-    const [exercise, setExercise] = useState([]);
-    const [loading, setLoading] = useState(true);
+function ExercisesContainer({ workout, setWorkout, exercise }) {
+    const {user} = useContext(UserContext);
+    // const [loading, setLoading] = useState(true);
+    
+    const [addToWorkout, setAddToWorkout] = useState({
+            // weight: "",
+            // sets: "",
+            // reps: "",
+            name: "",
+            exercise_id: ""
+        })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const resp = await fetch("http://127.0.0.1:9393/exercises")
-                const data = await resp.json()
-                setExercise(data)
-                setLoading(false)
-            } catch (error) {
-                alert(error)
-            }
-        }
+    // if (!!loading)
+    //     return <h1>Loading...</h1>;
 
-        fetchData()
-        
-    }, []);
+    function handleClick(event) {
+        event.preventDefault();
+        setAddToWorkout({
+            ...addToWorkout,
+            name: user,
+            exercise_id: parseInt(event.target.id)
+        })
 
-    if (!!loading) return <h1>Loading...</h1>
+        const individualExercise = parseInt(event.target.id);
+        if (!workout.includes(individualExercise))
+            setWorkout([...workout, individualExercise]);
+
+        fetch("http://localhost:9393/workouts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(addToWorkout),
+        });
+
+        console.log(addToWorkout);
+        console.log(user)
+    }
+
 
     return (
         <>
-            <h2>Our Exercise</h2>
-            <ExercisesList exercise={exercise} />
+            <h2>Our Exercises!!!!</h2>
+            <ExercisesList exercise={exercise} handleClick={handleClick} />
         </>
-    )
+    );
 }
 
 export default ExercisesContainer;

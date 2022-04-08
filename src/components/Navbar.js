@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import {UserContext} from "../context/user";
 import {NavLink} from 'react-router-dom'
 
 const style = {
@@ -6,12 +8,13 @@ const style = {
     padding: "1em",
     textDecoration: "none",
     color: "black",
-    backgroundColor: "rgb(2555, 120, 44)",
+    backgroundColor: "teal",
     fontWeight: "bold",
     verticalAlign: "center"
 }
 
 function Navbar() {
+    const {user} = useContext(UserContext)
     return (
         <div>
             <NavLink
@@ -23,6 +26,7 @@ function Navbar() {
                 style={style}
                 to="/"
             >Home</NavLink>
+
             <NavLink
             activeStyle={{
                 fontWeight: "bolder",
@@ -31,8 +35,9 @@ function Navbar() {
                 exact
                 style={style}
                 to="/exercises"
-            >exercises</NavLink>
-            <NavLink
+            >Our Exercises</NavLink>
+
+            {user ? <NavLink
             activeStyle={{
                 fontWeight: "bolder",
                 color: "red"
@@ -40,8 +45,29 @@ function Navbar() {
                 exact
                 style={style}
                 to="/exercises/new"
-            >New Exercise</NavLink>
-            <NavLink
+            >Record Exercise</NavLink> : null}
+
+            {user ? <NavLink
+            activeStyle={{
+                fontWeight: "bolder",
+                color: "red"
+            }}
+                exact
+                style={style}
+                to="/logout"
+            >Logout</NavLink> : null}
+            
+            {!user ? <NavLink
+            activeStyle={{
+                fontWeight: "bolder",
+                color: "red"
+            }}
+                exact
+                style={style}
+                to="/login"
+            >Login</NavLink> : null}
+
+            {user ? <NavLink
             activeStyle={{
                 fontWeight: "bolder",
                 color: "red"
@@ -49,7 +75,7 @@ function Navbar() {
                 exact
                 style={style}
                 to="/profile"
-            >Profile</NavLink>
+            >My Record</NavLink> : null}
         </div>
     )
 }

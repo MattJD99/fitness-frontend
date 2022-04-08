@@ -1,62 +1,81 @@
-import {useState} from "react"
+import {useState, useContext, CSSProperties } from "react"
 import {useHistory} from "react-router-dom"
+import { UserContext } from "../context/user";
+import Select from 'react-select'
 
-const ExerciseForm = () => {
-    const [Exercise, setExercise] = useState({
-        name: "",
-        species: "",
-        sunExposure: "",
-        wateringFreq: ""
+const ExerciseForm = ({ workout }) => {
+    const {user} = useContext(UserContext)
+    const [exercise, setExercise] = useState({
+        id: "",
+        // exercise_name: "",
+        sets: "", 
+        reps: "",
+        weight: ""
     });
+
     const history = useHistory()
 
-    const handleChange = (e) => {
+    function handleChange(e) {
+        console.log(e.target.value)
         setExercise({
-            ...Exercise,
+            ...exercise,
             [e.target.name]: e.target.value
-        })
+        });
     }
 
     const handleSubmit = e => {
         e.preventDefault()
-        // if ([Exercise.name, Exercise.species, Exercise.sunExposure, Exercise.wateringFreq].some(val => val.trim() === "")) {
-        if ([Exercise.name].some(val => val.trim() === "")) {
-
+        console.log("clicked")
+        if ([exercise.id, exercise.sets, exercise.reps, exercise.weight].some(val => val.trim() === "")) {
             alert("You must fill in all the information please!")
         }
 
         const newExercise = {
-            name: Exercise.name,
-            // species: Exercise.video_link,
-            // user_id: self.id,
-            // watering_freq: Exercise.wateringFreq
+            id: exercise.id,
+            sets: exercise.sets,
+            reps: exercise.reps,
+            weight: exercise.weight,
+            user_id: user.id.toString()
         }
+console.log(newExercise)
 
-        fetch("http://http://127.0.0.1:9393/exercises", {
-            method: "POST",
+        fetch(`http://127.0.0.1:9393/workouts/${exercise.id}`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(newExercise)
         })
-        .then(() => history.push("/exercises"))
+        .then(() => history.push("/profile"))
         
     }
     return (
-        <>
-            <h3>Create a new Exercise</h3>
+        // <div style={{
+        //     color: 'hsl(0, 0%, 40%)',
+        //     display: 'inline-block',
+        //     fontSize: 12,
+        //     fontStyle: 'italic',
+        //     marginTop: '1em',
+        //   }}>
+        <div>
+            <h3>Log Your Exercise</h3> 
             <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Name</label>
-                <input onChange={handleChange} type="text" name="name" value={Exercise.exercise_name} required/><br />
-                {/* <label htmlFor="species">Species</label>
-                <input onChange={handleChange} type="text" name="species" value={Exercise.species} required/><br />
-                <label htmlFor="sunExposure">Sun Exposure (hrs/day)</label>
-                <input onChange={handleChange} type="number" name="sunExposure" value={Exercise.sunExposure} required/><br />
-                <label htmlFor="wateringFreq">Watering Frequency (days/week)</label>
-                <input onChange={handleChange} type="number" name="wateringFreq" value={Exercise.wateringFreq} required/><br /> */}
-                <input type="submit" value="Create Exercise" />
+                {/* <label htmlFor="name">Name</label> */}
+                <select name="id" onChange={handleChange}>
+                    {workout.map((option) => (
+                        <option value={option.id}>{option.exercise_name}</option>
+                    ))}
+                 </select>
+                {/* <input onChange={handleChange} type="text" name="exercise_name" value={exercise.exercise_name} required/><br /> */}
+                <label htmlFor="sets">Sets</label>
+                <input onChange={handleChange} type="number" name="sets" value={exercise.sets} required/><br />
+                <label htmlFor="reps">Reps</label>
+                <input onChange={handleChange} type="number" name="reps" value={exercise.reps} required/><br />
+                <label htmlFor="weight">Weight</label>
+                <input onChange={handleChange} type="number" name="weight" value={exercise.weight} required/><br />
+                <input type="submit" value="Log to your Journal" />
             </form>
-        </>
+        </div>
     )
 }
 
