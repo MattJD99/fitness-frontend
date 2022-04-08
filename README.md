@@ -1,7 +1,5 @@
 # Project - Fitness Tracker App
 
-Simple overview of use/purpose.
-
 ## Description
 
 The Fitness Tracker App allows you to browse our exercises as a guest.  You may also login to a user profile in order to add exercises to your workout.  Afterwards, you can record the sets, reps, and weight of each exercise that you complete. All completed exercises are accessible under the "My Record" page.
