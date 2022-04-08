@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { UserContext } from "../context/user";
 import YoutubeEmbed from "./YoutubeEmbed";
 
-function ExerciseCard({ exercise, workout, setWorkout }) {
+function ExerciseCard({ exercise }) {
     const {user} = useContext(UserContext)
     const [workoutObj, setWorkoutObj] = useState({
       exercise_id: null,
@@ -17,7 +17,6 @@ function ExerciseCard({ exercise, workout, setWorkout }) {
         exercise_name: exercise.exercise_name
       });
       console.log(workoutObj)
-      console.log(workoutObj.exercise_name)
 
       if (workoutObj.exercise_name !== null)
       fetch(`http://127.0.0.1:9393/workouts/${user.id}`, {
@@ -28,10 +27,6 @@ function ExerciseCard({ exercise, workout, setWorkout }) {
               body: JSON.stringify(workoutObj),
             })
             .then((response) => response.json())
-            // .then(((data) => {
-            //     setWorkout(data)
-            //   }))
-          
     }
             
 

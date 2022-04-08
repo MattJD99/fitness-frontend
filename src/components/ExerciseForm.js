@@ -50,23 +50,14 @@ console.log(newExercise)
         
     }
     return (
-        // <div style={{
-        //     color: 'hsl(0, 0%, 40%)',
-        //     display: 'inline-block',
-        //     fontSize: 12,
-        //     fontStyle: 'italic',
-        //     marginTop: '1em',
-        //   }}>
         <div>
             <h3>Log Your Exercise</h3> 
             <form onSubmit={handleSubmit}>
-                {/* <label htmlFor="name">Name</label> */}
                 <select name="id" onChange={handleChange}>
                     {workout.map((option) => (
                         <option value={option.id}>{option.exercise_name}</option>
                     ))}
                  </select>
-                {/* <input onChange={handleChange} type="text" name="exercise_name" value={exercise.exercise_name} required/><br /> */}
                 <label htmlFor="sets">Sets</label>
                 <input onChange={handleChange} type="number" name="sets" value={exercise.sets} required/><br />
                 <label htmlFor="reps">Reps</label>

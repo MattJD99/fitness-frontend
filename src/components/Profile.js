@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/user";
 
-function Profile({ workout, setWorkout, exercise } ) {
+function Profile({ workout, setWorkout } ) {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -18,7 +18,6 @@ function Profile({ workout, setWorkout, exercise } ) {
     .catch(error => console.log(error))
   }, [user, setWorkout]);
   
-  // if (!user) return <h2>Please Login To View Profile</h2>;
   return (
     <div id="profile">
       <h2>{user.name}'s Profile</h2>

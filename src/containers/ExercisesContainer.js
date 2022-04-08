@@ -4,19 +4,12 @@ import { UserContext } from "../context/user"
 
 function ExercisesContainer({ workout, setWorkout, exercise }) {
     const {user} = useContext(UserContext);
-    // const [loading, setLoading] = useState(true);
     
     const [addToWorkout, setAddToWorkout] = useState({
-            // weight: "",
-            // sets: "",
-            // reps: "",
             name: "",
             exercise_id: ""
         })
-
-    // if (!!loading)
-    //     return <h1>Loading...</h1>;
-
+        
     function handleClick(event) {
         event.preventDefault();
         setAddToWorkout({
