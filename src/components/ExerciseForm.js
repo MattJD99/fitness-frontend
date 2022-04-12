@@ -50,7 +50,7 @@ console.log(newExercise)
         
     }
     return (
-        <div>
+        <div >
             <h3>Log Your Exercise</h3> 
             <form onSubmit={handleSubmit}>
                 <select name="id" onChange={handleChange}>
